@@ -1,6 +1,9 @@
 from django.shortcuts import render
 import math
 
+# import redirect
+from django.shortcuts import redirect
+
 # Create your views here.
 # import model Chemical_Reaction
 from .models import Chemical_Reaction
@@ -104,5 +107,6 @@ def create_reactions_view(request):
         # diffs = solve_equation.main(reactions)
         reaction = Chemical_Reaction.objects.create(reactants=data["reaction"])
         reaction.save()
+        return redirect("show_reaction", reaction.id)
 
     return render(request, "create_reactions.html", {})
