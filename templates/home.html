@@ -1,0 +1,41 @@
+{%extends 'base.html' %}
+
+
+{% block content %}
+
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{% static 'assets/img/chmm.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Differential Equations</h1>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Equation</th>
+            <th scope="col">Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for r in reactions%}
+
+        <tr>
+            <th scope="row">{{r.id}}</th>
+            <td>{{r.reactants}}</td>
+            <td><a href="{% url 'show_reaction' r.id %}" style="color:#49be25"> Look closely</a></td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+{% endblock %}

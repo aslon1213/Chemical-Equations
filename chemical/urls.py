@@ -1,4 +1,9 @@
-from .views import create_reactions_view, show_reaction_description_view, home
+from .views import (
+    create_reactions_view,
+    show_reaction_description_view,
+    home,
+    contact_view,
+)
 from django.urls import path
 
 
@@ -10,4 +15,5 @@ urlpatterns = [
         name="show_reaction",
     ),
     path("", home, name="home"),
+    path("contact/", contact_view, name="contact"),
 ]

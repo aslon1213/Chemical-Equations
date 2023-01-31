@@ -7,12 +7,16 @@ from .models import Chemical_Reaction
 import solve_equation
 
 
+def contact_view(request):
+    return render(request, "contact.html", {})
+
+
 def home(request):
 
     all_reactions = Chemical_Reaction.objects.all()
     context = {"reactions": all_reactions}
 
-    return render(request, "base.html", context)
+    return render(request, "home.html", context)
 
 
 def show_reaction_description_view(request, reaction_id):
