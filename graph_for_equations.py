@@ -210,18 +210,17 @@ for i in range(num_iterations):
 
 
 x_array = array_of_values[elem.index("x")]
-print(x_array)
+# print(x_array)
 y_array = array_of_values[elem.index("y")]
-print(y_array)
+# print(y_array)
 
 z_array = array_of_values[elem.index("z")]
-print(z_array)
+# print(z_array)
 # Plot the results
-from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
 
 plt.style.use("seaborn-v0_8-poster")
-fig = plt.figure(figsize=(15, 15))
+fig = plt.figure(figsize=(10, 10))
 ax = plt.axes(projection="3d")
 ax.grid()
 ax.plot3D(x_array, y_array, z_array)
@@ -232,4 +231,5 @@ ax.set_xlabel("x", labelpad=20)
 ax.set_ylabel("y", labelpad=20)
 ax.set_zlabel("z", labelpad=20)
 
+plt.savefig("3d_plot.png")
 plt.show()

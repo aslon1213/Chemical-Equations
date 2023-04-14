@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 # import model Chemical_Reaction
 from .models import Chemical_Reaction
 import solve_equation
+from .utils import equation_to_graph
 
 
 def contact_view(request):
@@ -15,7 +16,6 @@ def contact_view(request):
 
 
 def home(request):
-
     all_reactions = Chemical_Reaction.objects.all()
     context = {"reactions": all_reactions}
 
@@ -29,6 +29,7 @@ def show_reaction_description_view(request, reaction_id):
     context["equation"] = reaction_equation.reactants
     equations = reaction_equation.reactants.split(" ")
     elements, diffs_1, diffs_2, diffs_3, output = solve_equation.main(equations)
+    equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
     context["elements"] = elements
     context["output"] = output
     elements_2 = {}
