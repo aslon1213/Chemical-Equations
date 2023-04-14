@@ -1,0 +1,97 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block content%}
+
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{% static 'assets/img/chmm.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Differential Equations</h1>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+            <h1>Reactions</h1>
+
+            <ul>
+                {% for key,value in elements.items%}
+
+                <li>
+                    <p>
+                        $${{value|slice:"0:1"}}_{{value|slice:"1:"}} = {{key}}$$
+                    </p>
+                </li>
+                {%endfor%}
+            </ul>
+
+
+            <!-- Diffs - 1 -->
+            <ul>
+                {% for key,value in diffs_1.items%}
+
+                <li>
+                    <p>
+                        $$ {{key}} = {{value}}$$
+                    </p>
+                </li>
+
+                {%endfor%}
+            </ul>
+
+            <!-- Diffs 2  -->
+            <ul>
+                {% for key,value in diffs_2.items%}
+                <li>
+                    <p>
+                        $$ \frac{\text{d}({{key}})}{\text{d}y} = {{value}}$$
+                    </p>
+                </li>
+
+                {%endfor%}
+            </ul>
+
+
+            <!-- Diffs 3  -->
+            <ul>
+                {% for key,value in diffs_3.items%}
+                <li>
+                    <p>
+                        $$ \frac{\text{d}({{key}})}{\text{d}y} = {{value}}$$
+                    </p>
+
+                </li>
+
+                {%endfor%}
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Elements -->
+
+
+
+<!-- Plot image -->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <h1>Plot</h1>
+            <img src="3d_plot.png" alt="plot" width="100%">
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}
