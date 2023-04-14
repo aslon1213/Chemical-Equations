@@ -1,3 +1,7 @@
+import numpy as np
+from numpy.linalg import eig
+
+
 def main(equation_example):
     left_side = []
     right_side = []
@@ -26,12 +30,12 @@ def main(equation_example):
     output += "\n\n############################################\n"
     for e in elements:
         output += elements[e] + " = " + e + "\n"
-        print(elements[e] + " = " + e)
+        # print(elements[e] + " = " + e)
 
     output += "\n\n############################################\n"
     for i in diffs_1:
         output += i + " = " + diffs_1[i] + "\n"
-        print(i + " = " + diffs_1[i])
+        # print(i + " = " + diffs_1[i])
 
     output += "\n\n############################################\n"
 
@@ -51,7 +55,7 @@ def print_differentials(diffs):
             statement += " - " + j
         for j in diffs[i][1]:
             statement += " + " + j
-        print(statement)
+        # print(statement)
         output += statement + "\n"
     return output
 
@@ -65,7 +69,7 @@ def differentials_1(elements, equations):
             o += elements[j] + "*"
         o = o[:-1]
         output["R" + str(n)] = o
-    print(output)
+    # print(output)
     return output
 
 
@@ -100,6 +104,12 @@ def differentials_2(elements, equations, diffs_1):
         diffs_3[k] = v
 
     return (diffs_2, diffs_3)
+
+
+def solve_for_graph(elements, diffs_1, diffs_2, diffs_3, output):
+    mat = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    vac, val = eig(mat)
+    # print(mat)
 
 
 # if __name__ == "__main__":
