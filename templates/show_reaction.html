@@ -81,25 +81,24 @@
 </div>
 <!-- Elements -->
 
-
-
 <!-- Plot image -->
 <form action="{% url 'show_reaction' reaction_id %}" method="post">
     {% csrf_token %}
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="form-floating">
-                    <input class="form-control" id="plot" name="plot" type="text" placeholder="Plot" />
-                    <label for="plot">Plot</label>
-                </div>
-                <br />
-                <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton"
-                        type="submit">Submit</button></div>
+                <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">PLOT THE
+                        GRAPH in 3D</button></div>
             </div>
         </div>
     </div>
 </form>
+
+
+<!-- Plot image -->
+<div>
+    <img src="plot.png" style="width: 1000px; height: 1000px;">
+</div>
 
 
 {%endblock%}
