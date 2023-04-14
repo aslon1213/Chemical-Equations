@@ -6,7 +6,6 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     elem = []
 
     # store keys in elements
-    print()
     for k, v in elements.items():
         elem.append(k)
     # reverse elements
