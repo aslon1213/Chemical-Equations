@@ -19,7 +19,7 @@ pipenv shell
 ```
 3. Download and install required python packages
 ```
-pip install django matplotlib
+pip install -r requirements.txt
 ```
 4. Run server
 ```
