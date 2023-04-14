@@ -30,3 +30,9 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 5. Navigate 127.0.0.1:8000
+
+
+Usage example - NOTE your every input should contain variables x,y,z in each of them at least once
+https://user-images.githubusercontent.com/70798072/232085856-916cb780-e7fb-4e53-8c57-3bed6a95d273.mp4
+
+
