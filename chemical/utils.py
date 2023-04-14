@@ -135,5 +135,5 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     ax.set_xlabel("x", labelpad=20)
     ax.set_ylabel("y", labelpad=20)
     ax.set_zlabel("z", labelpad=20)
-    ax.show()
+    # plt.show()
     # ax.savefig("templates/plot.png")
