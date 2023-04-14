@@ -160,7 +160,10 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     ax.set_xlabel("x", labelpad=20)
     ax.set_ylabel("y", labelpad=20)
     ax.set_zlabel("z", labelpad=20)
+    # run plt.show() in parallel with the server to see the plot in parallel
+
     plt.show()
+
     ax.savefig("templates/plot.png")
 
 
@@ -171,7 +174,10 @@ def show_reaction_description_view(request, reaction_id):
     context["equation"] = reaction_equation.reactants
     equations = reaction_equation.reactants.split(" ")
     elements, diffs_1, diffs_2, diffs_3, output = solve_equation.main(equations)
-    equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
+    if request.method == "POST":
+        coefficients = {}
+        equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
+
     context["elements"] = elements
     context["output"] = output
     elements_2 = {}
@@ -238,7 +244,7 @@ def show_reaction_description_view(request, reaction_id):
 
     diffs_3 = diffs_4
     context["diffs_3"] = diffs_3
-
+    context["reaction_id"] = reaction_id
     return render(request, "show_reaction.html", context)
 
 
