@@ -6,7 +6,6 @@ This is a Python program that balances chemical equations using the differential
 ## Getting Started
 
 To get started with this project, you'll need to have a python(version 3) installed on your machine.
-
 Step by step installation process:
 
 1. You can clone this repository to your local machine using Git:
