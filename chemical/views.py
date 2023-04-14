@@ -7,8 +7,9 @@ from django.shortcuts import redirect
 # Create your views here.
 # import model Chemical_Reaction
 from .models import Chemical_Reaction
-import solve_equation
-from .utils import equation_to_graph
+import chemical.solve_equation as solve_equation
+
+# from .utils import equation_to_graph
 
 
 def contact_view(request):
