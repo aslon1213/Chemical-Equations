@@ -38,3 +38,7 @@ Usage example - NOTE your every input should contain variables x,y,z in each of 
 https://user-images.githubusercontent.com/70798072/232085856-916cb780-e7fb-4e53-8c57-3bed6a95d273.mp4
 
 
+
+
+
+Or just download ```main.py``` and run the script using python
