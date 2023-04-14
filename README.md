@@ -15,8 +15,10 @@ git clone https://github.com/aslon1213/Chemical-Equations.git
 2. Create a new virtual environment for python using pipenv
 #if you don't have pipenv install already, install it using | pip install pipenv
 ```
-pipenv shell
+python -m pipenv shell
 ```
+or 
+```python3 -m pipenv shell```
 3. Download and install required python packages
 ```
 pip install -r requirements.txt
