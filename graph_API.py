@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import random
+import numpy as np
 from numpy.linalg import eig
 
 
@@ -106,33 +109,6 @@ def differentials_2(elements, equations, diffs_1):
     return (diffs_2, diffs_3)
 
 
-def solve_for_graph(elements, diffs_1, diffs_2, diffs_3, output):
-    mat = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    vac, val = eig(mat)
-    # print(mat)
-
-
-# if __name__ == "__main__":
-#     # a==x
-#     # x+y==x
-#     # b+x==y+c
-#     # x==d
-#     equation_example = ["a=>x", "x+y=>x", "b+x=>y+c", "x=>d"]
-#     # a+b==c
-#     # c+a==d+a
-#     # b+d==a
-#     equation_example = ["a+b=>c", "c+a=>d+a", "b+d=>a"]
-#     # a+s==>b+c+d
-#     # s+a+b==>f+e+g+h
-#     equation_example = ["a+s=>b+c+d", "s+a+b=>f+e+g+h"]
-#     output = main(equation_example=equation_example)
-
-#     with open("output.txt", "w") as f:
-#         f.write(output)
-import numpy as np
-import matplotlib.pyplot as plt
-
-
 def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     elem = []
 
@@ -197,53 +173,72 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
         diffs_4[elements[i.lower()]] = all
     diffs_3 = diffs_4
 
-    print(elem)
-    print(diffs_3)
+    # print(elem)
+    # print(diffs_3)
 
     # Define the parameters
     parameters_dict = {}
-    starting = 1
-    for i in range(len(diffs_3)):
-        parameters_dict["K" + str(starting)] = starting * 0.1
-        starting += 1
-    print(parameters_dict)
+
+    # print(parameters_dict)
     # Define the initial values
-    initial_values = []
-    for i in range(len(diffs_3)):
-        initial_values.append(0.25)
-        parameters_dict[elem[i]] = 0.25
 
     # Define the time step and the number of iterations
     h = 0.1
-    num_iterations = 10000
+    num_iterations = 100
 
     # Initialize the arrays to store the values of x, y, z, and others at each interval
     array_of_values = []
+    out_array = []
     for v in range(len(diffs_3)):
         array_of_values.append([])
-    print(array_of_values)
+        out_array.append([])
+    # print(array_of_values)
     coefficients = []
+    vv = 0.01
+    for i in range(100):
+        parameters_dict = {}
+        initial_values = []
+        for i in range(len(diffs_3)):
+            initial_values.append(vv)
+            parameters_dict[elem[i]] = vv
 
-    # Apply the Euler method
-    for i in range(num_iterations):
-        new_values = []
-        # x_new = x + h * (-K1 * x * y + K2 * c)
-        # y_new = y + h * (-K1 * x * y)
-        # c_new = c + h * (-K2 * c + K1 * x * y)
-        # z_new = z + h * (K2 * c)
-        for v in range(len(diffs_3)):
-            new_val = initial_values[v] + eval(diffs_3[elem[v]], parameters_dict) * h
+        starting = 1
+        for i in range(len(diffs_3)):
+            parameters_dict["K" + str(starting)] = 1
+            starting += 1
+        print(parameters_dict)
+        # Apply the Euler method
+        for i in range(num_iterations):
+            # Calculate the derivatives
+            #     dxdt = -k1 * x[i] * y[i] + k2 * c[i]
+            #     dydt = -k1 * x[i] * y[i]
+            #     dcdt = -k2 * c[i] + k1 * x[i] * y[i]
+            #     dzdt = k1 * c[i]
+            # derivetives = []
+            # for v in range(len(diffs_3)):
 
-            new_values.append(new_val)
+            new_values = []
+            # x_new = x + h * (-K1 * x * y + K2 * c)
+            # y_new = y + h * (-K1 * x * y)
+            # c_new = c + h * (-K2 * c + K1 * x * y)
+            # z_new = z + h * (K2 * c)
+            for v in range(len(diffs_3)):
+                new_val = (
+                    initial_values[v] + eval(diffs_3[elem[v]], parameters_dict) * h
+                )
 
-        # x = x_new
-        # y = y_new
-        # c = c_new
-        # z = z_new
-        for i in range(len(initial_values)):
-            initial_values[i] = new_values[i]
-            parameters_dict[elem[i]] = new_values[i]
-            array_of_values[i].append(new_values[i])
+                new_values.append(new_val)
+
+            # x = x_new
+            # y = y_new
+            # c = c_new
+            # z = z_new
+            for i in range(len(initial_values)):
+                initial_values[i] = new_values[i]
+                parameters_dict[elem[i]] = new_values[i]
+                array_of_values[i].append(new_values[i])
+                out_array[i].append(new_values[i])
+        vv += 0.1
 
     x_array = array_of_values[elem.index("x")]
     # print(x_array)
@@ -266,11 +261,47 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     ax.set_xlabel("x", labelpad=20)
     ax.set_ylabel("y", labelpad=20)
     ax.set_zlabel("z", labelpad=20)
+    # plt.plot(x_array, y_array, z_array)
+    # plt.show()
+    # plt.savefig("3d_plot.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     x_array,
+    #     np.arange(0, 10, 0.1),
+    # )
+    # plt.savefig("2d_plot_x.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     y_array,
+    #     np.arange(0, 10, 0.1),
+    # )
+    # plt.savefig("2d_plot_y.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     z_array,
+    #     np.arange(0, 10, 0.1),
+    # )
+    # plt.savefig("2d_plot_z.png")
+
+    # ax.savefig("templates/plot.png")
+    return (
+        out_array[elem.index("x")],
+        out_array[elem.index("y")],
+        out_array[elem.index("z")],
+    )
+
+
+def plot_2d(x, y, z, ts):
+    figure, exaes = plt.subplots(3, 1)
+
+    exaes[0].plot(x[:100], ts)
+    exaes[1].plot(y[:100], ts)
+    exaes[2].plot(z[:100], ts)
     plt.show()
-    plt.savefig("3d_plot.png")
 
 
-equation = input("Enter the equation: ")
-equation = equation.split(" ")
-elements, diffs_1, diffs_2, diffs_3, output = main(equation)
-equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
+elements, diffs_1, diffs_2, diffs_3, output = main(
+    equation_example=["a=>x", "x+y=>x", "b+x=>z+c", "x=>d"]
+)
+x, y, z = equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
+plot_2d(x, y, z, np.arange(0, 10, 0.1))
