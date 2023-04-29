@@ -86,6 +86,26 @@
     {% csrf_token %}
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
+
+            <!-- get the values of x,y,z and t-->
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="form-floating">
+                    <input class="form-control" id="x" name="x" type="text" placeholder="Enter value for x" />
+                    <label>Enter value for y</label>
+                </div>
+            </div>
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="form-floating">
+                    <input class="form-control" id="xy" name="y" type="text" placeholder="Enter value for y" />
+                    <label>Enter value for y</label>
+                </div>
+            </div>
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="form-floating">
+                    <input class="form-control" id="z" name="z" type="text" placeholder="Enter value for z" />
+                    <label>Enter value for z</label>
+                </div>
+            </div>
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="d-grid"><button class="btn btn-primary btn-xl" id="submitButton" type="submit">PLOT THE
                         GRAPH in 3D</button></div>

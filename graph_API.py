@@ -109,7 +109,7 @@ def differentials_2(elements, equations, diffs_1):
     return (diffs_2, diffs_3)
 
 
-def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
+def equation_to_graph(x, y, z, elements, diffs_1, diffs_2, diffs_3):
     elem = []
 
     # store keys in elements
@@ -173,13 +173,8 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
         diffs_4[elements[i.lower()]] = all
     diffs_3 = diffs_4
 
-    # print(elem)
-    # print(diffs_3)
-
     # Define the parameters
     parameters_dict = {}
-
-    # print(parameters_dict)
     # Define the initial values
 
     # Define the time step and the number of iterations
@@ -188,19 +183,30 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
 
     # Initialize the arrays to store the values of x, y, z, and others at each interval
     array_of_values = []
-    out_array = []
     for v in range(len(diffs_3)):
         array_of_values.append([])
-        out_array.append([])
     # print(array_of_values)
     coefficients = []
-    vv = 0.01
+    vv = x
     for i in range(100):
         parameters_dict = {}
         initial_values = []
-        for i in range(len(diffs_3)):
-            initial_values.append(vv)
-            parameters_dict[elem[i]] = vv
+        for j in range(len(diffs_3)):
+            if elem[j] == "x":
+                initial_values.append(x)
+                parameters_dict[elem[j]] = x
+                x += 0.1
+            elif elem[j] == "y":
+                initial_values.append(y)
+                parameters_dict[elem[j]] = y
+                y += 0.1
+            elif elem[j] == "z":
+                initial_values.append(z)
+                parameters_dict[elem[j]] = z
+                z += 0.1
+            else:
+                initial_values.append(vv)
+                parameters_dict[elem[j]] = vv
 
         starting = 1
         for i in range(len(diffs_3)):
@@ -237,7 +243,6 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
                 initial_values[i] = new_values[i]
                 parameters_dict[elem[i]] = new_values[i]
                 array_of_values[i].append(new_values[i])
-                out_array[i].append(new_values[i])
         vv += 0.1
 
     x_array = array_of_values[elem.index("x")]
@@ -261,8 +266,24 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     ax.set_xlabel("x", labelpad=20)
     ax.set_ylabel("y", labelpad=20)
     ax.set_zlabel("z", labelpad=20)
+
+    igure, exaes = plt.subplots(3, 1)
+    ts = np.arange(0, 10, 0.1)
+    exaes[0].plot(x_array[:100], ts)
+    # set the axes labels
+    exaes[0].set_xlabel("t")
+    exaes[0].set_ylabel("x")
+    exaes[1].plot(y_array[:100], ts)
+    # set the axes labels
+    exaes[1].set_xlabel("t")
+    exaes[1].set_ylabel("y")
+    exaes[2].plot(z_array[:100], ts)
+    # set the axes labels
+    exaes[2].set_xlabel("t")
+    exaes[2].set_ylabel("z")
+
     # plt.plot(x_array, y_array, z_array)
-    # plt.show()
+    plt.show()
     # plt.savefig("3d_plot.png")
     # plt.subplot(211)
     # plt.plot(
@@ -284,11 +305,6 @@ def equation_to_graph(elements, diffs_1, diffs_2, diffs_3):
     # plt.savefig("2d_plot_z.png")
 
     # ax.savefig("templates/plot.png")
-    return (
-        out_array[elem.index("x")],
-        out_array[elem.index("y")],
-        out_array[elem.index("z")],
-    )
 
 
 def plot_2d(x, y, z, ts):
@@ -303,5 +319,7 @@ def plot_2d(x, y, z, ts):
 elements, diffs_1, diffs_2, diffs_3, output = main(
     equation_example=["a=>x", "x+y=>x", "b+x=>z+c", "x=>d"]
 )
-x, y, z = equation_to_graph(elements, diffs_1, diffs_2, diffs_3)
-plot_2d(x, y, z, np.arange(0, 10, 0.1))
+x_init = float(input("Enter the initial value of x: "))
+y_init = float(input("Enter the initial value of y: "))
+z_init = float(input("Enter the initial value of z: "))
+equation_to_graph(x_init, y_init, z_init, elements, diffs_1, diffs_2, diffs_3)
