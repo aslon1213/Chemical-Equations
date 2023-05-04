@@ -3,6 +3,7 @@ import math
 
 # import redirect
 from django.shortcuts import redirect
+import json
 
 # Create your views here.
 # import model Chemical_Reaction
@@ -97,16 +98,14 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
     z_eqation = diffs_3["z"]
 
     # initial values
-    x_init = float(params["x"])
-    y_init = float(params["y"])
-    z_init = float(params["z"])
-
-    print(x_eqation, y_eqation, z_eqation)
+    x_init = float(params["param_x"])
+    y_init = float(params["param_y"])
+    z_init = float(params["param_z"])
     parameters_dict = {}
     # Define the time step and the number of iterations
     h = 0.1
-    num_iterations = 100
-
+    num_iterations = 10
+    ts = np.arange(0, num_iterations / 10, 0.1)
     # Initialize the arrays to store the values of x, y, z, and others at each interval
     array_of_values = []
     for v in range(len(diffs_3)):
@@ -114,9 +113,10 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
     # print(array_of_values)
     coefficients = []
     parameters_dict = {}
+    print("diffential equations", diffs_3)
     for i in params.keys():
-        if i != "csrfmiddlewaretoken":
-            parameters_dict[i] = float(params[i])
+        if i[:6] == "param_":
+            parameters_dict[i[6:]] = float(params[i])
     initial_values = []
 
     # define constants in the equation as 1
@@ -131,7 +131,6 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
         #     dxdt = -k1 * x[i] * y[i] + k2 * c[i]
         #     dydt = -k1 * x[i] * y[i]
         #     dzdt = k1 * c[i]
-        new_values = []
         # x_new = x + h * (-K1 * x * y + K2 * c)
         # y_new = y + h * (-K1 * x * y)
         # c_new = c + h * (-K2 * c + K1 * x * y)
@@ -153,47 +152,69 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
         array_of_values[0].append(x_new_val)
         array_of_values[1].append(y_new_val)
         array_of_values[2].append(z_new_val)
+        print(
+            "x",
+            parameters_dict["x"],
+            "y",
+            parameters_dict["y"],
+            "z",
+            parameters_dict["z"],
+        )
+
         h += 0.1
 
     print("dict of params", parameters_dict)
     x_array = array_of_values[0]
-    print(x_array)
+    # print(x_array)
     y_array = array_of_values[1]
-    print(y_array)
+    # print(y_array)
     z_array = array_of_values[2]
-    print(z_array)
+
+    with open("data.json", "w") as outfile:
+        j = {}
+        for i in range(len(array_of_values)):
+            j = {
+                ts[i]: {
+                    "x": array_of_values[0][i],
+                    "y": array_of_values[1][i],
+                    "z": array_of_values[2][i],
+                }
+            }
+
+        json.dump(array_of_values, outfile)
+
     # Plot the results
-    # import matplotlib.pyplot as plt
+    import matplotlib.pyplot as plt
 
-    # plt.style.use("seaborn-v0_8-poster")
-    # fig = plt.figure(figsize=(10, 10))
-    # ax = plt.axes(projection="3d")
-    # ax.grid()
-    # ax.plot3D(x_array, y_array, z_array)
-    # ax.set_title("3D Parametric Plot")
+    plt.style.use("seaborn-v0_8-poster")
+    fig = plt.figure(figsize=(10, 10))
+    ax = plt.axes(projection="3d")
+    ax.grid()
+    ax.plot3D(x_array, y_array, z_array)
+    ax.set_title("3D Parametric Plot")
 
-    # # Set axes label
-    # ax.set_xlabel("x", labelpad=20)
-    # ax.set_ylabel("y", labelpad=20)
-    # ax.set_zlabel("z", labelpad=20)
+    # Set axes label
+    ax.set_xlabel("x", labelpad=20)
+    ax.set_ylabel("y", labelpad=20)
+    ax.set_zlabel("z", labelpad=20)
 
-    # igure, exaes = plt.subplots(3, 1)
-    # ts = np.arange(0, 1000, 0.1)
-    # exaes[0].plot(ts, x_array[:100])
-    # # set the axes labels
-    # exaes[0].set_xlabel("t")
-    # exaes[0].set_ylabel("x")
-    # exaes[1].plot(ts, y_array)
-    # # set the axes labels
-    # exaes[1].set_xlabel("t")
-    # exaes[1].set_ylabel("y")
-    # exaes[2].plot(ts, z_array[:100])
-    # # set the axes labels
-    # exaes[2].set_xlabel("t")
-    # exaes[2].set_ylabel("z")
+    igure, exaes = plt.subplots(3, 1)
 
-    # plt.plot(x_array, y_array, z_array)
-    # plt.show()
+    exaes[0].plot(ts, x_array)
+    # set the axes labels
+    exaes[0].set_xlabel("t")
+    exaes[0].set_ylabel("x")
+    exaes[1].plot(ts, y_array)
+    # set the axes labels
+    exaes[1].set_xlabel("t")
+    exaes[1].set_ylabel("y")
+    exaes[2].plot(ts, z_array)
+    # set the axes labels
+    exaes[2].set_xlabel("t")
+    exaes[2].set_ylabel("z")
+
+    plt.plot(x_array, y_array, z_array)
+    plt.show()
     # plt.savefig("3d_plot.png")
     # plt.subplot(211)
     # plt.plot(
@@ -237,9 +258,9 @@ def show_reaction_description_view(request, reaction_id):
     if request.method == "POST":
         coefficients = {}
         elems = request.POST
-        print(elems)
+        # print(elems)
         elems = elems.dict()
-
+        # print(elems)
         equation_to_graph(
             elems,
             elements,
@@ -247,19 +268,15 @@ def show_reaction_description_view(request, reaction_id):
             diffs_2,
             diffs_3,
         )
-        # reverse the elements dict
-        print("elements", elements)
 
     context["elements"] = elements
     context["output"] = output
     elements_2 = {}
     for k, v in elements.items():
         elements_2[v] = k
-    print(elements_2)
+    # print(elements_2)
     for k, v in elements_2.items():
         elements[k] = v
-
-    print("ELEMENETS", elements)
     # diffs_1 manipulation
     r_d = {}
     for i in diffs_1:
