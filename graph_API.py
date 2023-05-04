@@ -109,7 +109,7 @@ def differentials_2(elements, equations, diffs_1):
     return (diffs_2, diffs_3)
 
 
-def equation_to_graph(x, y, z, elements, diffs_1, diffs_2, diffs_3):
+def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
     elem = []
 
     # store keys in elements
@@ -173,13 +173,21 @@ def equation_to_graph(x, y, z, elements, diffs_1, diffs_2, diffs_3):
         diffs_4[elements[i.lower()]] = all
     diffs_3 = diffs_4
 
-    # Define the parameters
-    parameters_dict = {}
-    # Define the initial values
+    # equations
+    x_eqation = diffs_3["x"]
+    y_eqation = diffs_3["y"]
+    z_eqation = diffs_3["z"]
 
+    # initial values
+    x_init = float(params["x"])
+    y_init = float(params["y"])
+    z_init = float(params["z"])
+
+    print(x_eqation, y_eqation, z_eqation)
+    parameters_dict = {}
     # Define the time step and the number of iterations
     h = 0.1
-    num_iterations = 100
+    num_iterations = 10000
 
     # Initialize the arrays to store the values of x, y, z, and others at each interval
     array_of_values = []
@@ -187,70 +195,53 @@ def equation_to_graph(x, y, z, elements, diffs_1, diffs_2, diffs_3):
         array_of_values.append([])
     # print(array_of_values)
     coefficients = []
-    vv = x
-    for i in range(100):
-        parameters_dict = {}
-        initial_values = []
-        for j in range(len(diffs_3)):
-            if elem[j] == "x":
-                initial_values.append(x)
-                parameters_dict[elem[j]] = x
-                x += 0.1
-            elif elem[j] == "y":
-                initial_values.append(y)
-                parameters_dict[elem[j]] = y
-                y += 0.1
-            elif elem[j] == "z":
-                initial_values.append(z)
-                parameters_dict[elem[j]] = z
-                z += 0.1
-            else:
-                initial_values.append(vv)
-                parameters_dict[elem[j]] = vv
+    parameters_dict = {}
+    for i in params.keys():
+        if i != "csrfmiddlewaretoken":
+            parameters_dict[i] = float(params[i])
+    initial_values = []
 
-        starting = 1
-        for i in range(len(diffs_3)):
-            parameters_dict["K" + str(starting)] = 1
-            starting += 1
-        print(parameters_dict)
-        # Apply the Euler method
-        for i in range(num_iterations):
-            # Calculate the derivatives
-            #     dxdt = -k1 * x[i] * y[i] + k2 * c[i]
-            #     dydt = -k1 * x[i] * y[i]
-            #     dcdt = -k2 * c[i] + k1 * x[i] * y[i]
-            #     dzdt = k1 * c[i]
-            # derivetives = []
-            # for v in range(len(diffs_3)):
+    # define constants in the equation as 1
+    starting = 1
+    for i in range(len(diffs_3)):
+        parameters_dict["K" + str(starting)] = 1
+        starting += 1
+    print(parameters_dict)
+    # Apply the Euler method
+    for i in range(num_iterations):
+        # Calculate the derivatives
+        #     dxdt = -k1 * x[i] * y[i] + k2 * c[i]
+        #     dydt = -k1 * x[i] * y[i]
+        #     dzdt = k1 * c[i]
+        new_values = []
+        # x_new = x + h * (-K1 * x * y + K2 * c)
+        # y_new = y + h * (-K1 * x * y)
+        # c_new = c + h * (-K2 * c + K1 * x * y)
+        # z_new = z + h * (K2 * c)
+        x_new_val = x_init + eval(x_eqation, parameters_dict) * h
+        y_new_val = y_init + eval(y_eqation, parameters_dict) * h
+        z_new_val = z_init + eval(z_eqation, parameters_dict) * h
 
-            new_values = []
-            # x_new = x + h * (-K1 * x * y + K2 * c)
-            # y_new = y + h * (-K1 * x * y)
-            # c_new = c + h * (-K2 * c + K1 * x * y)
-            # z_new = z + h * (K2 * c)
-            for v in range(len(diffs_3)):
-                new_val = (
-                    initial_values[v] + eval(diffs_3[elem[v]], parameters_dict) * h
-                )
+        # update initial values
+        x_init = x_new_val
+        y_init = y_new_val
+        z_init = z_new_val
+        # update parameters_dict
+        parameters_dict["x"] = x_init
+        parameters_dict["y"] = y_init
+        parameters_dict["z"] = z_init
 
-                new_values.append(new_val)
+        # Append the values to the arrays
+        array_of_values[0].append(x_new_val)
+        array_of_values[1].append(y_new_val)
+        array_of_values[2].append(z_new_val)
+        h += 0.1
 
-            # x = x_new
-            # y = y_new
-            # c = c_new
-            # z = z_new
-            for i in range(len(initial_values)):
-                initial_values[i] = new_values[i]
-                parameters_dict[elem[i]] = new_values[i]
-                array_of_values[i].append(new_values[i])
-        vv += 0.1
-
-    x_array = array_of_values[elem.index("x")]
+    x_array = array_of_values[0]
     # print(x_array)
-    y_array = array_of_values[elem.index("y")]
+    y_array = array_of_values[1]
     # print(y_array)
-
-    z_array = array_of_values[elem.index("z")]
+    z_array = array_of_values[2]
     # print(z_array)
     # Plot the results
     import matplotlib.pyplot as plt
@@ -322,4 +313,14 @@ elements, diffs_1, diffs_2, diffs_3, output = main(
 x_init = float(input("Enter the initial value of x: "))
 y_init = float(input("Enter the initial value of y: "))
 z_init = float(input("Enter the initial value of z: "))
-equation_to_graph(x_init, y_init, z_init, elements, diffs_1, diffs_2, diffs_3)
+params = {
+    "x": x_init,
+    "y": y_init,
+    "z": z_init,
+    "a": 1,
+    "b": 1,
+    "c": 1,
+    "d": 1,
+    "csrfmiddlewaretoken": "",
+}
+equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3)
