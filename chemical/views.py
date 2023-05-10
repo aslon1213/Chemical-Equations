@@ -188,7 +188,7 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
 
     igure, exaes = plt.subplots(3, 1)
     ts = np.arange(0, 1000, 0.1)
-    exaes[0].plot(ts, x_array[:100])
+    exaes[0].plot(ts, x_array)
     # set the axes labels
     exaes[0].set_xlabel("t")
     exaes[0].set_ylabel("x")
@@ -196,34 +196,34 @@ def equation_to_graph(params, elements, diffs_1, diffs_2, diffs_3):
     # set the axes labels
     exaes[1].set_xlabel("t")
     exaes[1].set_ylabel("y")
-    exaes[2].plot(ts, z_array[:100])
+    exaes[2].plot(ts, z_array)
     # set the axes labels
     exaes[2].set_xlabel("t")
     exaes[2].set_ylabel("z")
 
-    plt.plot(x_array, y_array, z_array)
-    plt.show()
-    plt.savefig("3d_plot.png")
-    plt.subplot(211)
-    plt.plot(
-        x_array,
-        np.arange(0, 10, 0.1),
-    )
-    plt.savefig("2d_plot_x.png")
-    plt.subplot(211)
-    plt.plot(
-        y_array,
-        np.arange(0, 10, 0.1),
-    )
-    plt.savefig("2d_plot_y.png")
-    plt.subplot(211)
-    plt.plot(
-        z_array,
-        np.arange(0, 10, 0.1),
-    )
-    plt.savefig("2d_plot_z.png")
+    # plt.plot(x_array, y_array, z_array)
+    # plt.show()
+    # plt.savefig("3d_plot.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     x_array,
+    #     np.arange(0.1, 10.1, 0.1),
+    # )
+    # plt.savefig("2d_plot_x.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     y_array,
+    #     np.arange(0.1, 10.1, 0.1),
+    # )
+    # plt.savefig("2d_plot_y.png")
+    # plt.subplot(211)
+    # plt.plot(
+    #     z_array,
+    #     np.arange(0.1, 10.1, 0.1),
+    # )
+    # plt.savefig("2d_plot_z.png")
 
-    ax.savefig("templates/plot.png")
+    # ax.savefig("templates/plot.png")
 
 
 def show_reaction_description_view(request, reaction_id):

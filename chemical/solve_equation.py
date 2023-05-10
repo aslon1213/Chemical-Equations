@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.linalg import eig
 
 
 def main(equation_example):
@@ -104,12 +103,6 @@ def differentials_2(elements, equations, diffs_1):
         diffs_3[k] = v
 
     return (diffs_2, diffs_3)
-
-
-def solve_for_graph(elements, diffs_1, diffs_2, diffs_3, output):
-    mat = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    vac, val = eig(mat)
-    # print(mat)
 
 
 # if __name__ == "__main__":
